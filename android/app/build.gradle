@@ -58,6 +58,21 @@ android {
             signingConfig signingConfigs.debug
         }
     }
+
+    flavorDimensions "default"
+
+    productFlavors{
+        prod{
+            dimension "default"
+            resValue "string", "app_name", "Sub Minder"
+        }
+
+        dev{
+            dimension "default"
+            resValue "string", "app_name", "Sub Minder dev"
+            applicationIdSuffix ".dev"
+        }
+    }
 }
 
 flutter {
