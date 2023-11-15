@@ -38,6 +38,36 @@ class DatabaseHelper {
   ) async {
     await _createCurrencyTable(db, version);
   }
+
+  Future readTable(
+    String table, {
+    bool? distinct,
+    List<String>? columns,
+    String? where,
+    List<Object?>? whereArgs,
+    String? groupBy,
+    String? having,
+    String? orderBy,
+    int? limit,
+    int? offset,
+  }) async {
+    final Database db = await instance.database;
+
+    final List<Map<String, dynamic>> list = await db.query(
+      table,
+      distinct: distinct,
+      columns: columns,
+      where: where,
+      whereArgs: whereArgs,
+      groupBy: groupBy,
+      having: having,
+      orderBy: orderBy,
+      limit: limit,
+      offset: offset,
+    );
+
+    return list;
+  }
 }
 
 Future _createCurrencyTable(
@@ -75,9 +105,8 @@ List<Map<String, dynamic>> _initCurrencies() {
 }
 
 Future<List<Currency>> fetchAllCurrencies() async {
-  final Database db = await DatabaseHelper.instance.database;
-
-  final List<Map<String, dynamic>> list = await db.query('currency');
+  final DatabaseHelper db = DatabaseHelper.instance;
+  final List<Map<String, dynamic>> list = await db.readTable('currency');
 
   return list.map((json) => Currency.fromJson(json)).toList();
 }
