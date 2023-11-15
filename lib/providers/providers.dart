@@ -4,3 +4,5 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 final sharedPreferencesProvider = Provider<SharedPreferences>((ref) {
   throw UnimplementedError();
 });
+
+final darkModeProvider = StateProvider<bool>((ref) => false);
