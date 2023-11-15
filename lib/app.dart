@@ -9,8 +9,11 @@ import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
-import './providers/providers.dart';
+import 'package:sub_minder/model/currency.dart';
 import './services/local_notification.dart';
+import './services/database.dart';
+import './providers/providers.dart';
+import './providers/currenciesProvider.dart';
 
 void runWithAppConfig() async {
   final NotificationHelper localNotification = NotificationHelper();
@@ -44,6 +47,8 @@ class _EagerInitialization extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // Eagerly initialize providers by watching them.
     // By using "watch", the provider will stay alive and not be disposed.
+    final res = ref.watch(currenciesProvider);
+    debugPrint(res.map((e) => e.toJson()).toList().toString());
     return child;
   }
 }
@@ -80,7 +85,7 @@ class App extends StatelessWidget {
   }
 }
 
-class MyHomePage extends StatefulWidget {
+class MyHomePage extends ConsumerStatefulWidget {
   const MyHomePage({super.key, required this.title});
 
   // This widget is the home page of your application. It is stateful, meaning
@@ -95,21 +100,20 @@ class MyHomePage extends StatefulWidget {
   final String title;
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  ConsumerState<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends ConsumerState<MyHomePage> {
   int _counter = 0;
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
+  void _add() async {
+    await ref.read(currenciesProvider.notifier).addCurrency(
+        Currency(name: 'test', code: 'testcode', symbol: 'testsymbal'));
+  }
+
+  void _remove() async {
+    await ref.read(currenciesProvider.notifier).removeCurrency(
+        Currency(name: 'test', code: 'testcode', symbol: 'testsymbal'));
   }
 
   @override
@@ -156,11 +160,15 @@ class _MyHomePageState extends State<MyHomePage> {
               '$_counter',
               style: Theme.of(context).textTheme.headlineMedium,
             ),
+            ElevatedButton(
+              onPressed: _remove,
+              child: const Text('Remove'),
+            ),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
+        onPressed: _add,
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
