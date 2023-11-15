@@ -1,11 +1,55 @@
-import 'package:flutter/material.dart';
+import 'dart:io';
 
-void runWithAppConfig() {
-  runApp(const MyApp());
+import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_timezone/flutter_timezone.dart';
+import 'package:timezone/data/latest_all.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
+
+import './providers/providers.dart';
+import './services/local_notification.dart';
+
+void runWithAppConfig() async {
+  final NotificationHelper localNotification = NotificationHelper();
+
+  await _configureLocalTimeZone();
+  await localNotification.initialNotification();
+  await localNotification.requestPermission();
+
+  final sharedPreferences = await SharedPreferences.getInstance();
+
+  runApp(ProviderScope(
+    overrides: [
+      sharedPreferencesProvider.overrideWithValue(sharedPreferences),
+    ],
+    child: const _EagerInitialization(child: App()),
+  ));
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+Future<void> _configureLocalTimeZone() async {
+  if (kIsWeb || Platform.isLinux) return;
+  tz.initializeTimeZones();
+  final String timeZoneName = await FlutterTimezone.getLocalTimezone();
+  tz.setLocalLocation(tz.getLocation(timeZoneName));
+}
+
+class _EagerInitialization extends ConsumerWidget {
+  const _EagerInitialization({required this.child});
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    // Eagerly initialize providers by watching them.
+    // By using "watch", the provider will stay alive and not be disposed.
+    return child;
+  }
+}
+
+class App extends StatelessWidget {
+  const App({super.key});
 
   // This widget is the root of your application.
   @override
