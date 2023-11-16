@@ -11,6 +11,7 @@ import 'package:timezone/timezone.dart' as tz;
 import './services/local_notification.dart';
 import './providers/providers.dart';
 import './providers/currenciesProvider.dart';
+import 'views/layout/sliver_page_layout.dart';
 
 void runWithAppConfig() async {
   final NotificationHelper localNotification = NotificationHelper();
@@ -63,7 +64,7 @@ class App extends ConsumerWidget {
         brightness: isDark ? Brightness.dark : Brightness.light,
         barBackgroundColor: const CupertinoDynamicColor.withBrightness(
           color: CupertinoColors.white,
-          darkColor: CupertinoColors.black,
+          darkColor: CupertinoColors.darkBackgroundGray,
         ),
         scaffoldBackgroundColor: const CupertinoDynamicColor.withBrightness(
           color: CupertinoColors.white,
@@ -105,16 +106,26 @@ class MyHomePage extends ConsumerStatefulWidget {
 class _MyHomePageState extends ConsumerState<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    return CupertinoPageScaffold(
-      child: Center(
-        child: CupertinoButton.filled(
-          child: const Text('Toogle'),
-          onPressed: () {
-            ref.read(darkModeProvider.notifier).state =
-                !ref.read(darkModeProvider.notifier).state;
-          },
-        ),
-      ),
+    return SliverPageLayout(
+      largeTitle: Text('Sliver Text'),
+      slivers: [
+        SliverFillRemaining(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text('Content'),
+              CupertinoButton.filled(
+                child: Text('Theme mode'),
+                onPressed: () {
+                  ref.read(darkModeProvider.notifier).state =
+                      !ref.read(darkModeProvider.notifier).state;
+                },
+              ),
+              Text('Footer'),
+            ],
+          ),
+        )
+      ],
     );
   }
 }
