@@ -5,11 +5,13 @@ part 'currency.g.dart';
 
 @JsonSerializable()
 class Currency extends Equatable {
+  final int? id;
   final String name;
   final String code;
   final String symbol;
 
-  Currency({
+  const Currency({
+    this.id,
     required this.name,
     required this.code,
     required this.symbol,

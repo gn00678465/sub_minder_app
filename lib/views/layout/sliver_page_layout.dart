@@ -85,11 +85,9 @@ class _BlurGlassSliverNavBar extends State<BlurGlassSliverNavBar> {
       border: Border(
         bottom: BorderSide(
           width: 0.0,
-          color: _isCollapsed
-              ? isDark
-                  ? CupertinoColors.white.withOpacity(0.5)
-                  : CupertinoColors.black.withOpacity(0.5)
-              : const _SpecialColor(),
+          color: isDark
+              ? CupertinoColors.white.withOpacity(0.5)
+              : CupertinoColors.black.withOpacity(0.5),
         ),
       ),
     );
