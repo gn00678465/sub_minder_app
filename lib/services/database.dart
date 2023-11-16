@@ -1,12 +1,15 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:intl/intl.dart';
 
 import '../constants/currencies.dart';
+import '../constants/cetegories.dart';
 import '../model/currency.dart';
+import '../model/category.dart';
 
 class DatabaseHelper {
   static const String _dbName = "Database.db";
@@ -36,7 +39,8 @@ class DatabaseHelper {
     Database db,
     int version,
   ) async {
-    await _createCurrencyTable(db, version);
+    await _createCurrencyTable(db);
+    await _createCategoriesTable(db);
   }
 
   Future readTable(
@@ -70,10 +74,7 @@ class DatabaseHelper {
   }
 }
 
-Future _createCurrencyTable(
-  Database db,
-  int version,
-) async {
+Future _createCurrencyTable(Database db) async {
   const String createCurrencyTable = '''
     CREATE TABLE currency (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -91,10 +92,24 @@ Future _createCurrencyTable(
   }
 }
 
+Future _createCategoriesTable(Database db) async {
+  const String createTable = '''
+    CREATE TABLE category (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      name TEXT NOT NULL
+    )
+    ''';
+  await db.execute(createTable);
+
+  for (final cat in Categories.values) {
+    await db.insert('category', {"name": categoryMap[cat]});
+  }
+}
+
 List<Map<String, dynamic>> _initCurrencies() {
-  final List<Currency> list = [];
+  final List<CurrencyModel> list = [];
   for (final currency in Currencies.values) {
-    list.add(Currency(
+    list.add(CurrencyModel(
       symbol: NumberFormat.simpleCurrency(name: currency.name).currencySymbol,
       code: currency.name,
       name: currencyName[currency]!,
@@ -104,9 +119,16 @@ List<Map<String, dynamic>> _initCurrencies() {
   return list.map((e) => e.toJson()).toList();
 }
 
-Future<List<Currency>> fetchAllCurrencies() async {
+Future<List<CurrencyModel>> fetchAllCurrencies() async {
   final DatabaseHelper db = DatabaseHelper.instance;
   final List<Map<String, dynamic>> list = await db.readTable('currency');
 
-  return list.map((json) => Currency.fromJson(json)).toList();
+  return list.map((json) => CurrencyModel.fromJson(json)).toList();
+}
+
+Future<List<CategoryModel>> fetchAllCategories() async {
+  final DatabaseHelper db = DatabaseHelper.instance;
+  final List<Map<String, dynamic>> list = await db.readTable('category');
+
+  return list.map((json) => CategoryModel.fromJson(json)).toList();
 }

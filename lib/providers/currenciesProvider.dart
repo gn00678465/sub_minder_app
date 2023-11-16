@@ -5,7 +5,7 @@ import 'package:sqflite/sqflite.dart';
 import '../services/database.dart';
 import '../model/currency.dart';
 
-class CurrenciesNotifier extends StateNotifier<List<Currency>> {
+class CurrenciesNotifier extends StateNotifier<List<CurrencyModel>> {
   CurrenciesNotifier() : super([]) {
     _getCurrencyList();
   }
@@ -19,7 +19,8 @@ class CurrenciesNotifier extends StateNotifier<List<Currency>> {
     }
   }
 
-  Future<List<Map<String, dynamic>>> _hasCurrency(Currency currency) async {
+  Future<List<Map<String, dynamic>>> _hasCurrency(
+      CurrencyModel currency) async {
     final db = await DatabaseHelper.instance.database;
     final List<Map<String, dynamic>> result = await db.query(
       'currency',
@@ -30,7 +31,7 @@ class CurrenciesNotifier extends StateNotifier<List<Currency>> {
     return result;
   }
 
-  Future<void> addCurrency(Currency currency) async {
+  Future<void> addCurrency(CurrencyModel currency) async {
     try {
       final db = await DatabaseHelper.instance.database;
       final List<Map<String, dynamic>> result = await _hasCurrency(currency);
@@ -47,7 +48,7 @@ class CurrenciesNotifier extends StateNotifier<List<Currency>> {
     }
   }
 
-  Future<void> removeCurrency(Currency currency) async {
+  Future<void> removeCurrency(CurrencyModel currency) async {
     try {
       final db = await DatabaseHelper.instance.database;
       final List<Map<String, dynamic>> result = await _hasCurrency(currency);
@@ -70,6 +71,6 @@ class CurrenciesNotifier extends StateNotifier<List<Currency>> {
 }
 
 final currenciesProvider =
-    StateNotifierProvider.autoDispose<CurrenciesNotifier, List<Currency>>(
+    StateNotifierProvider.autoDispose<CurrenciesNotifier, List<CurrencyModel>>(
   (ref) => CurrenciesNotifier(),
 );

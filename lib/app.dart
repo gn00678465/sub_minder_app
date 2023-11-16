@@ -11,6 +11,7 @@ import 'package:timezone/timezone.dart' as tz;
 import './services/local_notification.dart';
 import './providers/providers.dart';
 import './providers/currenciesProvider.dart';
+import './providers/categoriesProvider.dart';
 import 'views/layout/sliver_page_layout.dart';
 
 void runWithAppConfig() async {
@@ -45,8 +46,10 @@ class _EagerInitialization extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // Eagerly initialize providers by watching them.
     // By using "watch", the provider will stay alive and not be disposed.
-    final res = ref.watch(currenciesProvider);
-    debugPrint(res.map((e) => e.toJson()).toList().toString());
+    final res = ref.watch(categoriesProvider.future);
+    res.then((value) {
+      debugPrint(value.map((e) => e.toJson()).toList().toString());
+    });
     return child;
   }
 }
