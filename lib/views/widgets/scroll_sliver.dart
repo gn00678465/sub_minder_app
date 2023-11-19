@@ -94,8 +94,8 @@ class _BlurGlassSliverNavBar extends State<BlurGlassSliverNavBar> {
   }
 }
 
-class SliverPageLayout extends StatelessWidget {
-  SliverPageLayout({
+class ScrollSliver extends StatelessWidget {
+  ScrollSliver({
     super.key,
     this.largeTitle,
     this.leading,
@@ -120,22 +120,20 @@ class SliverPageLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CupertinoPageScaffold(
-      child: CustomScrollView(
-        controller: scrollController,
-        slivers: <Widget>[
-          BlurGlassSliverNavBar(
-            scrollController: scrollController,
-            leading: leading,
-            trailing: trailing,
-            largeTitle: largeTitle,
-            alwaysShowMiddle: alwaysShowMiddle,
-            previousPageTitle: previousPageTitle,
-            middle: middle,
-          ),
-          ...slivers,
-        ],
-      ),
+    return CustomScrollView(
+      controller: scrollController,
+      slivers: <Widget>[
+        BlurGlassSliverNavBar(
+          scrollController: scrollController,
+          leading: leading,
+          trailing: trailing,
+          largeTitle: largeTitle,
+          alwaysShowMiddle: alwaysShowMiddle,
+          previousPageTitle: previousPageTitle,
+          middle: middle,
+        ),
+        ...slivers,
+      ],
     );
   }
 }

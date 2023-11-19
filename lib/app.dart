@@ -11,7 +11,7 @@ import 'package:timezone/timezone.dart' as tz;
 import './services/local_notification.dart';
 import './providers/providers.dart';
 import './providers/currenciesProvider.dart';
-import 'views/layout/sliver_page_layout.dart';
+import './routes/router.dart';
 
 void runWithAppConfig() async {
   final NotificationHelper localNotification = NotificationHelper();
@@ -57,7 +57,7 @@ class App extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final bool isDark = ref.watch(darkModeProvider);
-    return CupertinoApp(
+    return CupertinoApp.router(
       title: 'Sub Minder',
       debugShowCheckedModeBanner: false,
       theme: CupertinoThemeData(
@@ -89,43 +89,47 @@ class App extends ConsumerWidget {
           ),
         ),
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      routeInformationProvider: AppRouter().router.routeInformationProvider,
+      routeInformationParser: AppRouter().router.routeInformationParser,
+      routerDelegate: AppRouter().router.routerDelegate,
     );
   }
 }
 
-class MyHomePage extends ConsumerStatefulWidget {
-  const MyHomePage({super.key, required this.title});
+// class MyHomePage extends ConsumerStatefulWidget {
+//   const MyHomePage({super.key, required this.title});
 
-  final String title;
+//   final String title;
 
-  @override
-  ConsumerState<MyHomePage> createState() => _MyHomePageState();
-}
+//   @override
+//   ConsumerState<MyHomePage> createState() => _MyHomePageState();
+// }
 
-class _MyHomePageState extends ConsumerState<MyHomePage> {
-  @override
-  Widget build(BuildContext context) {
-    return SliverPageLayout(
-      largeTitle: Text('Sliver Text'),
-      slivers: [
-        SliverFillRemaining(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text('Content'),
-              CupertinoButton.filled(
-                child: Text('Theme mode'),
-                onPressed: () {
-                  ref.read(darkModeProvider.notifier).state =
-                      !ref.read(darkModeProvider.notifier).state;
-                },
-              ),
-              Text('Footer'),
-            ],
-          ),
-        )
-      ],
-    );
-  }
-}
+// class _MyHomePageState extends ConsumerState<MyHomePage> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return CupertinoPageScaffold(
+//       child: SliverLayout(
+//         largeTitle: Text('Sliver Text'),
+//         slivers: [
+//           SliverFillRemaining(
+//             child: Column(
+//               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//               children: [
+//                 Text('Content'),
+//                 CupertinoButton.filled(
+//                   child: Text('Theme mode'),
+//                   onPressed: () {
+//                     ref.read(darkModeProvider.notifier).state =
+//                         !ref.read(darkModeProvider.notifier).state;
+//                   },
+//                 ),
+//                 Text('Footer'),
+//               ],
+//             ),
+//           )
+//         ],
+//       ),
+//     );
+//   }
+// }
