@@ -11,7 +11,7 @@ import 'package:timezone/timezone.dart' as tz;
 import './services/local_notification.dart';
 import './providers/providers.dart';
 import './providers/currenciesProvider.dart';
-import 'views/layout/sliver_page_layout.dart';
+import './routes/router.dart';
 
 void runWithAppConfig() async {
   final NotificationHelper localNotification = NotificationHelper();
@@ -57,75 +57,48 @@ class App extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final bool isDark = ref.watch(darkModeProvider);
-    return CupertinoApp(
+    return CupertinoApp.router(
       title: 'Sub Minder',
       debugShowCheckedModeBanner: false,
-      theme: CupertinoThemeData(
-        brightness: isDark ? Brightness.dark : Brightness.light,
-        barBackgroundColor: const CupertinoDynamicColor.withBrightness(
-          color: CupertinoColors.white,
-          darkColor: CupertinoColors.darkBackgroundGray,
-        ),
-        scaffoldBackgroundColor: const CupertinoDynamicColor.withBrightness(
-          color: CupertinoColors.white,
-          darkColor: CupertinoColors.black,
-        ),
-        textTheme: const CupertinoTextThemeData(
-          navLargeTitleTextStyle: TextStyle(
-            inherit: false,
-            fontSize: 34,
-            fontWeight: FontWeight.w700,
-            fontFamily: 'GenSenRounded',
-            color: CupertinoDynamicColor.withBrightness(
-                color: CupertinoColors.black, darkColor: CupertinoColors.white),
-            letterSpacing: 1.05,
-          ),
-          textStyle: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w400,
-            fontFamily: 'GenSenRounded',
-            color: CupertinoDynamicColor.withBrightness(
-                color: CupertinoColors.black, darkColor: CupertinoColors.white),
-          ),
-        ),
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
-}
-
-class MyHomePage extends ConsumerStatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
-
-  @override
-  ConsumerState<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends ConsumerState<MyHomePage> {
-  @override
-  Widget build(BuildContext context) {
-    return SliverPageLayout(
-      largeTitle: Text('Sliver Text'),
-      slivers: [
-        SliverFillRemaining(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text('Content'),
-              CupertinoButton.filled(
-                child: Text('Theme mode'),
-                onPressed: () {
-                  ref.read(darkModeProvider.notifier).state =
-                      !ref.read(darkModeProvider.notifier).state;
-                },
+      builder: (context, child) {
+        return CupertinoTheme(
+          data: CupertinoThemeData(
+            brightness: isDark ? Brightness.dark : Brightness.light,
+            barBackgroundColor: const CupertinoDynamicColor.withBrightness(
+              color: CupertinoColors.white,
+              darkColor: CupertinoColors.darkBackgroundGray,
+            ),
+            scaffoldBackgroundColor: const CupertinoDynamicColor.withBrightness(
+              color: CupertinoColors.white,
+              darkColor: CupertinoColors.black,
+            ),
+            textTheme: const CupertinoTextThemeData(
+              navLargeTitleTextStyle: TextStyle(
+                inherit: false,
+                fontSize: 34,
+                fontWeight: FontWeight.w700,
+                fontFamily: 'GenSenRounded',
+                color: CupertinoDynamicColor.withBrightness(
+                    color: CupertinoColors.black,
+                    darkColor: CupertinoColors.white),
+                letterSpacing: 1.05,
               ),
-              Text('Footer'),
-            ],
+              textStyle: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w400,
+                fontFamily: 'GenSenRounded',
+                color: CupertinoDynamicColor.withBrightness(
+                    color: CupertinoColors.black,
+                    darkColor: CupertinoColors.white),
+              ),
+            ),
           ),
-        )
-      ],
+          child: child!,
+        );
+      },
+      routeInformationProvider: AppRouter().router.routeInformationProvider,
+      routeInformationParser: AppRouter().router.routeInformationParser,
+      routerDelegate: AppRouter().router.routerDelegate,
     );
   }
 }
