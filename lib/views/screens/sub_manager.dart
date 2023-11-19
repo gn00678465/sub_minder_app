@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../widgets/scroll_sliver.dart';
+import './sub_manager_edit.dart';
 
 class SubManager extends ConsumerStatefulWidget {
   const SubManager({super.key});
@@ -19,14 +20,16 @@ class _SubManager extends ConsumerState<SubManager> {
         child: const Icon(
           CupertinoIcons.add,
         ),
-        onPressed: () {},
+        onPressed: () {
+          openSubManager(context);
+        },
       ),
       slivers: const <Widget>[
         SliverFillRemaining(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text('List'),
+              Text('Manger'),
             ],
           ),
         ),

@@ -18,9 +18,9 @@ class _SubStats extends ConsumerState<SubStats> {
       slivers: const <Widget>[
         SliverFillRemaining(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text('List'),
+              Text('Stats'),
             ],
           ),
         ),

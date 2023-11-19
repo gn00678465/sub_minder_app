@@ -1,30 +1,38 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../layout/main_layout.dart';
 import './sub_manager.dart';
 import './sub_settings.dart';
 import './sub_stats.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({
-    super.key,
-  });
+class HomePage extends ConsumerStatefulWidget {
+  const HomePage({super.key});
 
   @override
-  State<HomePage> createState() => _HomePage();
+  ConsumerState<HomePage> createState() => _HomePage();
 }
 
-class _HomePage extends State<HomePage> {
-  int _currentPage = 0;
-
+class _HomePage extends ConsumerState<HomePage> {
+  final PageController _pageController =
+      PageController(initialPage: 0, keepPage: true);
   @override
   void initState() {
     super.initState();
   }
 
   @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return CupertinoTabScaffold(
+    return MainLayout(
+      keepAlive: true,
       tabBar: CupertinoTabBar(
+        currentIndex: ref.watch(_pageProvider),
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(CupertinoIcons.list_bullet),
@@ -39,16 +47,25 @@ class _HomePage extends State<HomePage> {
             label: '設定',
           ),
         ],
-        onTap: (int value) {
-          _currentPage = value;
+        onTap: (int index) {
+          ref.read(_pageProvider.notifier).state = index;
         },
       ),
       tabBuilder: (BuildContext context, int index) {
         return CupertinoTabView(
           builder: (context) {
-            return SubPageView(
-              page: _currentPage,
-            );
+            return switch (index) {
+              0 => const SubManager(
+                  key: ValueKey('SubManger'),
+                ),
+              1 => const SubStats(
+                  key: ValueKey('SubStats'),
+                ),
+              2 => const SubSettings(
+                  key: ValueKey('SubSettings'),
+                ),
+              _ => const SizedBox.shrink(),
+            };
           },
         );
       },
@@ -56,40 +73,4 @@ class _HomePage extends State<HomePage> {
   }
 }
 
-class SubPageView extends StatefulWidget {
-  const SubPageView({
-    super.key,
-    required this.page,
-  });
-
-  final int page;
-
-  @override
-  State<SubPageView> createState() => _SubPageView();
-}
-
-class _SubPageView extends State<SubPageView> {
-  PageController? _controller;
-
-  @override
-  void initState() {
-    _controller = PageController(initialPage: widget.page, keepPage: true);
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        PageView(
-          controller: _controller,
-          children: const [
-            SubManager(),
-            SubStats(),
-            SubSettings(),
-          ],
-        ),
-      ],
-    );
-  }
-}
+final _pageProvider = StateProvider<int>((ref) => 0);

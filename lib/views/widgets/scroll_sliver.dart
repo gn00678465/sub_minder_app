@@ -67,7 +67,7 @@ class _BlurGlassSliverNavBar extends State<BlurGlassSliverNavBar> {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = CupertinoTheme.maybeBrightnessOf(context) == Brightness.dark;
+    // final isDark = CupertinoTheme.maybeBrightnessOf(context) == Brightness.dark;
 
     return CupertinoSliverNavigationBar(
       leading: leading,
@@ -77,19 +77,19 @@ class _BlurGlassSliverNavBar extends State<BlurGlassSliverNavBar> {
       middle: middle,
       previousPageTitle: previousPageTitle,
       stretch: true,
-      backgroundColor: _isCollapsed
-          ? isDark
-              ? const Color.fromRGBO(45, 45, 45, 0.5)
-              : CupertinoColors.white.withOpacity(0.5)
-          : const _SpecialColor(),
-      border: Border(
-        bottom: BorderSide(
-          width: 0.0,
-          color: isDark
-              ? CupertinoColors.white.withOpacity(0.5)
-              : CupertinoColors.black.withOpacity(0.5),
-        ),
-      ),
+      // backgroundColor: _isCollapsed
+      //     ? isDark
+      //         ? const Color.fromRGBO(45, 45, 45, 0.5)
+      //         : CupertinoColors.white.withOpacity(0.5)
+      //     : const _SpecialColor(),
+      // border: Border(
+      //   bottom: BorderSide(
+      //     width: 0.0,
+      //     color: isDark
+      //         ? CupertinoColors.white.withOpacity(0.5)
+      //         : CupertinoColors.black.withOpacity(0.5),
+      //   ),
+      // ),
     );
   }
 }
@@ -121,7 +121,8 @@ class ScrollSliver extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomScrollView(
-      controller: scrollController,
+      // controller: scrollController,
+      physics: const BouncingScrollPhysics(),
       slivers: <Widget>[
         BlurGlassSliverNavBar(
           scrollController: scrollController,
@@ -138,9 +139,9 @@ class ScrollSliver extends StatelessWidget {
   }
 }
 
-class _SpecialColor extends Color {
-  const _SpecialColor() : super(0x00000000);
+// class _SpecialColor extends Color {
+//   const _SpecialColor() : super(0x00000000);
 
-  @override
-  int get alpha => 0xFF;
-}
+//   @override
+//   int get alpha => 0xFF;
+// }
