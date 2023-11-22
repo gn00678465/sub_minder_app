@@ -10,9 +10,8 @@ import 'package:timezone/timezone.dart' as tz;
 
 import './services/local_notification.dart';
 import './providers/providers.dart';
-import './providers/currenciesProvider.dart';
-import './providers/categoriesProvider.dart';
 import 'views/layout/sliver_page_layout.dart';
+import './providers/settingsProvider.dart';
 
 void runWithAppConfig() async {
   final NotificationHelper localNotification = NotificationHelper();
@@ -46,10 +45,7 @@ class _EagerInitialization extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // Eagerly initialize providers by watching them.
     // By using "watch", the provider will stay alive and not be disposed.
-    final res = ref.watch(categoriesProvider.future);
-    res.then((value) {
-      debugPrint(value.map((e) => e.toJson()).toList().toString());
-    });
+    ref.watch(notificationSettingsProvider);
     return child;
   }
 }
@@ -59,7 +55,7 @@ class App extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final bool isDark = ref.watch(darkModeProvider);
+    final bool isDark = ref.watch(displaySettingsProvider)?.darkMode ?? false;
     return CupertinoApp(
       title: 'Sub Minder',
       debugShowCheckedModeBanner: false,
@@ -120,8 +116,7 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
               CupertinoButton.filled(
                 child: Text('Theme mode'),
                 onPressed: () {
-                  ref.read(darkModeProvider.notifier).state =
-                      !ref.read(darkModeProvider.notifier).state;
+                  ref.read(displaySettingsProvider.notifier).toggleDarkMode();
                 },
               ),
               Text('Footer'),

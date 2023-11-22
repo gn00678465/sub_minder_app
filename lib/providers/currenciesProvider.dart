@@ -12,7 +12,7 @@ class CurrenciesNotifier extends StateNotifier<List<CurrencyModel>> {
 
   _getCurrencyList() async {
     try {
-      final todoList = await fetchAllCurrencies();
+      final todoList = await fetchTable('currencies', CurrencyModel.fromJson);
       state = todoList;
     } on Exception catch (e) {
       debugPrint(e.toString());
@@ -23,7 +23,7 @@ class CurrenciesNotifier extends StateNotifier<List<CurrencyModel>> {
       CurrencyModel currency) async {
     final db = await DatabaseHelper.instance.database;
     final List<Map<String, dynamic>> result = await db.query(
-      'currency',
+      'currencies',
       columns: ['id'],
       where: "code = ? AND name = ?",
       whereArgs: [currency.code, currency.name],
@@ -37,7 +37,7 @@ class CurrenciesNotifier extends StateNotifier<List<CurrencyModel>> {
       final List<Map<String, dynamic>> result = await _hasCurrency(currency);
       if (result.isEmpty) {
         await db.insert(
-          'currency',
+          'currencies',
           currency.toJson(),
           conflictAlgorithm: ConflictAlgorithm.replace,
         );
@@ -55,7 +55,7 @@ class CurrenciesNotifier extends StateNotifier<List<CurrencyModel>> {
       if (result.isNotEmpty) {
         final int id = result[0]['id'];
         await db.delete(
-          'currency',
+          'currencies',
           where: "id = ?",
           whereArgs: [id],
         );
