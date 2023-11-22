@@ -5,24 +5,25 @@ import 'package:sqflite/sqflite.dart';
 import '../services/database.dart';
 import '../model/currency.dart';
 
-class CurrenciesNotifier extends StateNotifier<List<Currency>> {
+class CurrenciesNotifier extends StateNotifier<List<CurrencyModel>> {
   CurrenciesNotifier() : super([]) {
     _getCurrencyList();
   }
 
   _getCurrencyList() async {
     try {
-      final todoList = await fetchAllCurrencies();
+      final todoList = await fetchTable('currencies', CurrencyModel.fromJson);
       state = todoList;
     } on Exception catch (e) {
       debugPrint(e.toString());
     }
   }
 
-  Future<List<Map<String, dynamic>>> _hasCurrency(Currency currency) async {
+  Future<List<Map<String, dynamic>>> _hasCurrency(
+      CurrencyModel currency) async {
     final db = await DatabaseHelper.instance.database;
     final List<Map<String, dynamic>> result = await db.query(
-      'currency',
+      'currencies',
       columns: ['id'],
       where: "code = ? AND name = ?",
       whereArgs: [currency.code, currency.name],
@@ -30,13 +31,13 @@ class CurrenciesNotifier extends StateNotifier<List<Currency>> {
     return result;
   }
 
-  Future<void> addCurrency(Currency currency) async {
+  Future<void> addCurrency(CurrencyModel currency) async {
     try {
       final db = await DatabaseHelper.instance.database;
       final List<Map<String, dynamic>> result = await _hasCurrency(currency);
       if (result.isEmpty) {
         await db.insert(
-          'currency',
+          'currencies',
           currency.toJson(),
           conflictAlgorithm: ConflictAlgorithm.replace,
         );
@@ -47,14 +48,14 @@ class CurrenciesNotifier extends StateNotifier<List<Currency>> {
     }
   }
 
-  Future<void> removeCurrency(Currency currency) async {
+  Future<void> removeCurrency(CurrencyModel currency) async {
     try {
       final db = await DatabaseHelper.instance.database;
       final List<Map<String, dynamic>> result = await _hasCurrency(currency);
       if (result.isNotEmpty) {
         final int id = result[0]['id'];
         await db.delete(
-          'currency',
+          'currencies',
           where: "id = ?",
           whereArgs: [id],
         );
@@ -70,6 +71,6 @@ class CurrenciesNotifier extends StateNotifier<List<Currency>> {
 }
 
 final currenciesProvider =
-    StateNotifierProvider.autoDispose<CurrenciesNotifier, List<Currency>>(
+    StateNotifierProvider.autoDispose<CurrenciesNotifier, List<CurrencyModel>>(
   (ref) => CurrenciesNotifier(),
 );

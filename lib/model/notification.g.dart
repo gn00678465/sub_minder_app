@@ -1,23 +1,19 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'currency.dart';
+part of 'notification.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-CurrencyModel _$CurrencyModelFromJson(Map<String, dynamic> json) =>
-    CurrencyModel(
+NotificationModel _$NotificationModelFromJson(Map<String, dynamic> json) =>
+    NotificationModel(
       id: json['id'] as int?,
       name: json['name'] as String,
-      code: json['code'] as String,
-      symbol: json['symbol'] as String,
     );
 
-Map<String, dynamic> _$CurrencyModelToJson(CurrencyModel instance) =>
+Map<String, dynamic> _$NotificationModelToJson(NotificationModel instance) =>
     <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
-      'code': instance.code,
-      'symbol': instance.symbol,
     };
