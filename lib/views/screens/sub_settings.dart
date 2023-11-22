@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../widgets/scroll_sliver.dart';
-import '../../providers/providers.dart';
+import '../../providers/settingsProvider.dart';
 
 class SubSettings extends ConsumerStatefulWidget {
   const SubSettings({super.key});
@@ -24,8 +24,7 @@ class _SubSettings extends ConsumerState<SubSettings> {
               CupertinoButton.filled(
                 child: const Text('Theme'),
                 onPressed: () {
-                  ref.read(darkModeProvider.notifier).state =
-                      !ref.read(darkModeProvider.notifier).state;
+                  ref.read(displaySettingsProvider.notifier).toggleDarkMode();
                 },
               )
             ],

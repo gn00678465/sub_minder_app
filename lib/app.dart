@@ -55,8 +55,7 @@ class App extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-<<<<<<< HEAD
-    final bool isDark = ref.watch(darkModeProvider);
+    final bool isDark = ref.watch(displaySettingsProvider)?.darkMode ?? false;
     return CupertinoApp.router(
       title: 'Sub Minder',
       debugShowCheckedModeBanner: false,
@@ -82,71 +81,6 @@ class App extends ConsumerWidget {
                     color: CupertinoColors.black,
                     darkColor: CupertinoColors.white),
                 letterSpacing: 1.05,
-=======
-    final bool isDark = ref.watch(displaySettingsProvider)?.darkMode ?? false;
-    return CupertinoApp(
-      title: 'Sub Minder',
-      debugShowCheckedModeBanner: false,
-      theme: CupertinoThemeData(
-        brightness: isDark ? Brightness.dark : Brightness.light,
-        barBackgroundColor: const CupertinoDynamicColor.withBrightness(
-          color: CupertinoColors.white,
-          darkColor: CupertinoColors.darkBackgroundGray,
-        ),
-        scaffoldBackgroundColor: const CupertinoDynamicColor.withBrightness(
-          color: CupertinoColors.white,
-          darkColor: CupertinoColors.black,
-        ),
-        textTheme: const CupertinoTextThemeData(
-          navLargeTitleTextStyle: TextStyle(
-            inherit: false,
-            fontSize: 34,
-            fontWeight: FontWeight.w700,
-            fontFamily: 'GenSenRounded',
-            color: CupertinoDynamicColor.withBrightness(
-                color: CupertinoColors.black, darkColor: CupertinoColors.white),
-            letterSpacing: 1.05,
-          ),
-          textStyle: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w400,
-            fontFamily: 'GenSenRounded',
-            color: CupertinoDynamicColor.withBrightness(
-                color: CupertinoColors.black, darkColor: CupertinoColors.white),
-          ),
-        ),
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
-}
-
-class MyHomePage extends ConsumerStatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
-
-  @override
-  ConsumerState<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends ConsumerState<MyHomePage> {
-  @override
-  Widget build(BuildContext context) {
-    return SliverPageLayout(
-      largeTitle: Text('Sliver Text'),
-      slivers: [
-        SliverFillRemaining(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text('Content'),
-              CupertinoButton.filled(
-                child: Text('Theme mode'),
-                onPressed: () {
-                  ref.read(displaySettingsProvider.notifier).toggleDarkMode();
-                },
->>>>>>> feature/init_database
               ),
               textStyle: TextStyle(
                 fontSize: 16,
