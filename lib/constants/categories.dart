@@ -1,0 +1,31 @@
+enum Categories {
+  entertainment,
+  music,
+  video,
+  software,
+  fitness,
+  education,
+  investment,
+  gaming,
+  technology,
+  cloudServices,
+  streamServices,
+  utilities,
+  insurance,
+}
+
+Map<Categories, String> categoryMap = {
+  Categories.entertainment: 'Entertainment',
+  Categories.music: 'Music',
+  Categories.video: 'Video',
+  Categories.software: 'Software',
+  Categories.fitness: 'Fitness',
+  Categories.education: 'Education',
+  Categories.investment: 'Investment',
+  Categories.gaming: 'Gaming',
+  Categories.technology: 'Technology',
+  Categories.cloudServices: 'Cloud Services',
+  Categories.streamServices: 'Streaming services',
+  Categories.utilities: 'Utilities',
+  Categories.insurance: 'Insurance',
+};

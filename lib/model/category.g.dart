@@ -1,23 +1,19 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'currency.dart';
+part of 'category.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-CurrencyModel _$CurrencyModelFromJson(Map<String, dynamic> json) =>
-    CurrencyModel(
+CategoryModel _$CategoryModelFromJson(Map<String, dynamic> json) =>
+    CategoryModel(
       id: json['id'] as int?,
       name: json['name'] as String,
-      code: json['code'] as String,
-      symbol: json['symbol'] as String,
     );
 
-Map<String, dynamic> _$CurrencyModelToJson(CurrencyModel instance) =>
+Map<String, dynamic> _$CategoryModelToJson(CategoryModel instance) =>
     <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
-      'code': instance.code,
-      'symbol': instance.symbol,
     };

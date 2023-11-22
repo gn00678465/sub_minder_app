@@ -1,23 +1,21 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'currency.dart';
+part of 'payment_method.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-CurrencyModel _$CurrencyModelFromJson(Map<String, dynamic> json) =>
-    CurrencyModel(
+PaymentMethodModel _$PaymentMethodModelFromJson(Map<String, dynamic> json) =>
+    PaymentMethodModel(
       id: json['id'] as int?,
       name: json['name'] as String,
-      code: json['code'] as String,
-      symbol: json['symbol'] as String,
+      icon: json['icon'] as String,
     );
 
-Map<String, dynamic> _$CurrencyModelToJson(CurrencyModel instance) =>
+Map<String, dynamic> _$PaymentMethodModelToJson(PaymentMethodModel instance) =>
     <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
-      'code': instance.code,
-      'symbol': instance.symbol,
+      'icon': instance.icon,
     };
