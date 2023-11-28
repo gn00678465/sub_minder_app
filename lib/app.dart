@@ -78,8 +78,9 @@ class App extends ConsumerWidget {
                 fontWeight: FontWeight.w700,
                 fontFamily: 'GenSenRounded',
                 color: CupertinoDynamicColor.withBrightness(
-                    color: CupertinoColors.black,
-                    darkColor: CupertinoColors.white),
+                  color: CupertinoColors.black,
+                  darkColor: CupertinoColors.white,
+                ),
                 letterSpacing: 1.05,
               ),
               textStyle: TextStyle(
@@ -87,8 +88,9 @@ class App extends ConsumerWidget {
                 fontWeight: FontWeight.w400,
                 fontFamily: 'GenSenRounded',
                 color: CupertinoDynamicColor.withBrightness(
-                    color: CupertinoColors.black,
-                    darkColor: CupertinoColors.white),
+                  color: CupertinoColors.black,
+                  darkColor: CupertinoColors.white,
+                ),
               ),
             ),
           ),

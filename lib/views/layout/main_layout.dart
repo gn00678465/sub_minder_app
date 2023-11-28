@@ -7,12 +7,14 @@ class MainLayout extends StatefulWidget {
     required this.tabBuilder,
     this.controller,
     this.keepAlive = false,
+    this.backgroundColor,
   });
 
   final CupertinoTabBar tabBar;
   final Widget Function(BuildContext, int) tabBuilder;
   final CupertinoTabController? controller;
   final bool keepAlive;
+  final Color? backgroundColor;
 
   @override
   State<MainLayout> createState() => _MainLayout();
@@ -29,6 +31,7 @@ class _MainLayout extends State<MainLayout> with AutomaticKeepAliveClientMixin {
       controller: widget.controller,
       tabBar: widget.tabBar,
       tabBuilder: widget.tabBuilder,
+      backgroundColor: widget.backgroundColor,
     );
   }
 }
