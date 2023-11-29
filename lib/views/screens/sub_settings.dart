@@ -20,9 +20,9 @@ class _SubSettings extends ConsumerState<SubSettings> {
     return ScrollSliver(
       largeTitle: const Text('設定'),
       slivers: <Widget>[
-        SliverFillRemaining(
-          child: Column(
-            children: [
+        SliverList(
+          delegate: SliverChildListDelegate(
+            [
               const ProfileCard(),
               ListSection(
                 title: '顯示設定',
@@ -138,6 +138,13 @@ class _SubSettings extends ConsumerState<SubSettings> {
                 ],
               ),
             ],
+          ),
+        ),
+        SliverFillRemaining(
+          hasScrollBody: false,
+          fillOverscroll: true,
+          child: Container(
+            color: CupertinoColors.systemGroupedBackground,
           ),
         ),
       ],
